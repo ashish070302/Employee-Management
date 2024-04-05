@@ -4,26 +4,26 @@
     ViewData["Title"] = "Home Page";
 }
 
-<link href="~/css/style.css" rel="stylesheet" />
-
+<link href="~/css/empindex.css" rel="stylesheet" />
 <div class="text-center">
     <h1 class="display-1">Employee Portal</h1>
 </div>
 <br/>
-<div class="row mt-2">
+<div class="row row-cols-1 row-cols-md-3 g-4">
     @if (Model != null)
     {
         @foreach (var item in Model)
         {
-            <div class="col-3 mb-2">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="@item.EmployeeImage" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.EmployeeName</h5>
-                        <p class="card-text">@item.EmployeeDept</p>
-                        <a asp-action="Details" asp-route-id="@item.EmployeeId" class="btn btn-primary">See Details</a>
+            <div class="col"> 
+                <div class="card h-100">
+                    <div class="img-container">
+                        <img class="card-img-top" src="@item.EmployeeImage" alt="Card image cap">
                     </div>
-                </div>
+                    <div class="card-body"> <h5 class="card-title">@item.EmployeeName</h5> 
+                        <p class="card-text">@item.EmployeeDept</p> 
+                        <a asp-action="Details" asp-route-id="@item.EmployeeId" class="btn btn-primary">See Details</a> 
+                    </div> 
+                </div> 
             </div>
         }
     }
@@ -32,24 +32,3 @@
         <p>No employees found.</p>
     }
 </div>
-
-<style>
-    h1 {
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 64px;
-    }
-
-    .navbar {
-        padding-top: 0; /* Remove top padding */
-    }
-
-    .navbar-nav .nav-link {
-        color: #f8f9fa; /* Off-white color */
-    }
-
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link:focus {
-            color: #dee2e6; /* Lighter shade of off-white on hover/focus */
-        }
-</style>
-

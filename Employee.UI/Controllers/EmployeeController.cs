@@ -51,9 +51,9 @@ namespace EmployeeUI.Controllers
             if (!string.IsNullOrEmpty(searchText))
             {
                 emps = emps.Where(x => x.Name.Contains(searchText) ||
-            x.Code.Contains(searchText) ||
-            x.PhoneNumber.Contains(searchText) ||
-            x.Email.Contains(searchText));
+                    x.Code.Contains(searchText) ||
+                    x.PhoneNumber.Contains(searchText) ||
+                    x.Email.Contains(searchText));
             }
             totalItems = emps.ToList().Count;
             emps = emps.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
@@ -132,6 +132,7 @@ namespace EmployeeUI.Controllers
                 ViewBag.DepartmentList = new SelectList(departments, "Id", "Name");
 
             }
+
             if (vm.ImageURL != null)
             {
                 emp.ImageURL = await _utilityRepo.SaveImage(containerName, vm.ImageURL);

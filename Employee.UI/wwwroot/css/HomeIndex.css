@@ -1,0 +1,48 @@
+﻿.card {
+    width: 18rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+}
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+/* Container for cropping */
+.img-container {
+    height: 200px; /* Set the fixed height for all card images */
+    overflow: hidden; /* Hide overflow */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Styles for card image */
+.card-img-top {
+    width: auto; /* Ensure the image fills the entire width of the container */
+    height: auto; /* Allow the image to adjust its height based on the container width */
+    object-fit: cover; /* Crop the image to cover the entire container */
+    object-position: center; /* Position the cropped image towards the center */
+}
+
+/* Styles for card body */
+.card-body {
+    background-color: #f8f9fa;
+}
+
+/* Styles for card title and text */
+.card-title {
+    font-size: 1.25rem;
+}
+
+.card-text {
+    font-size: 1rem;
+}
+
+@media (max-width: 767px) {
+    .row {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

@@ -11,7 +11,7 @@ namespace Employee.UI.ViewModels
         public string? Address { get; set; }
 
         [Required(ErrorMessage = "Date of Birth is should be Greater than 18 years.")]
-        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode =true)]
+        [DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         [DateOfBirthValidation]
         public DateTime DateOfBirth { get; set; }
 

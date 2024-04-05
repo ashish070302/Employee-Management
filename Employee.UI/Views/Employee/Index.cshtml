@@ -3,13 +3,10 @@
 @{
     ViewData["Title"] = "Index";
 }
+<link href="~/css/empindex.css" rel="stylesheet" />
 
 <div class="container-fluid">
-    <br>
-    <br>
-    <h1 class="text-center">Employee's List</h1>
-    <br>
-    <br>
+    <h1 class="text-center">Employee's List</h1><br /><br />
 
     <div class="row">
         <div class="col-6">
@@ -25,7 +22,7 @@
         </div>
     </div>
 
-    <div class="col-12">
+    <div class="table-responsive">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -33,7 +30,7 @@
                         Id
                     </th>
                     <th>
-                        Employee Code
+                        Code
                     </th>
                     <th>
                         Name
@@ -85,7 +82,7 @@
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                            <a href="#" onclick="confirmDelete('@item.Name', '@item.Id')">Delete</a>
                     </td>
                 </tr>
         }
@@ -97,10 +94,19 @@
     var previous = Model.PageInfo.HasPrevious ? "" : "disabled";
     var next = Model.PageInfo.HasNext ? "" : "disabled";
 }
-
+    @section Scripts
+    {
+        <script>
+            function confirmDelete(employeeName, employeeId) {
+                if (confirm("Are you sure you want to delete " + employeeName + "?")) {
+                    window.location.href = '@Url.Action("Delete", "Employee")' + "?id=" + employeeId;
+                }
+            }
+        </script>
+    }
 @* <a asp-route-filterText="@ViewData["filterData"]" class="btn btn-dark @previous" asp-route-pageNumber="@(Model.PageInfo.PageNumber - 1)">Previous</a> *@
 @* <a asp-route-filterText="@ViewData["filterData"]" class="btn btn-dark @next" asp-route-pageNumber="@(Model.PageInfo.PageNumber + 1)">Next</a> *@
-
+    <br />
     <div class="row">
         <div class="col-12 d-flex justify-content-end">
             <nav aria-label="Page navigation">
@@ -128,93 +134,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    body {
-        background-color: #f5f5f5; /* Off white background */
-        color: #000; /* Black text color */
-    }
-
-    .container {
-        max-width: 1500px; /* Adjust container width */
-        margin: auto;
-    }
-
-    form {
-        margin-bottom: 20px;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    textarea,
-    select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    input[type="submit"] {
-        width: auto;
-        cursor: pointer;
-    }
-
-    label {
-        font-weight: bold;
-    }
-
-    .text-danger {
-        font-size: 12px;
-    }
-
-    .btn-primary {
-        background-color: #007bff; /* Bootstrap primary color */
-        border-color: #007bff;
-    }
-
-        .btn-primary:hover {
-            background-color: #0056b3; /* Darker shade on hover */
-            border-color: #0056b3;
-        }
-
-    .back-link {
-        display: block;
-        margin-top: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 15px; /* Add margin between form groups */
-    }
-
-    input[type="text"],
-    input[type="email"],
-    textarea,
-    select {
-        margin-bottom: 5px; /* Add margin between form elements */
-    }
-
-    .table {
-        width: 100%; /* Set the table width to 100% of its container */
-    }
-
-    h1 {
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 64px;
-    }
-
-    .navbar {
-        padding-top: 0; /* Remove top padding */
-    }
-
-    .navbar-nav .nav-link {
-        color: #f8f9fa; /* Off-white color */
-    }
-
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link:focus {
-            color: #dee2e6; /* Lighter shade of off-white on hover/focus */
-        }
-
-</style>

@@ -1,0 +1,19 @@
+﻿.table-responsive {
+    overflow-x: auto; /* Add horizontal scroll bar */
+}
+
+/* Style for pagination */
+.pagination {
+    justify-content: flex-end; /* Align pagination to the right */
+}
+
+    .pagination .page-item .page-link {
+        color: white; /* Blue color for page numbers */
+        background-color: cornflowerblue; /* White background color */
+        border-color: black; /* White border color */
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: blue; /* Set background color for active page link */
+    }
+

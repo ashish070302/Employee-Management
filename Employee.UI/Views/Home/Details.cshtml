@@ -1,109 +1,75 @@
 ﻿@model Employee.UI.ViewModels.HomePageViewModel.HomeEmployeeDetailsViewModel
-
-
+<link href="~/css/homedetails.css" rel="stylesheet" />
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <br/>
-            <h1 class="text-center mb-4">Employee Details</h1>
-            <br/>
+            <h1 class="text-center mb-5">Employee Details</h1>
         </div>
-        <div class="row">
-            <div class="col-5">
-                <img src="@Model.ImageURL" alt="Employee Image" class="img-fluid rounded-lg img-cover" width="550" height="400">
-            </div>
-            <div class="col-7">
-                <dl class="row">
-                    <dt class="col-sm-4 h4">Employee ID:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.EmpId)</dd>
-
-                    <dt class="col-sm-4 h4">Employee Code:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.EmpCode)</dd>
-
-                    <dt class="col-sm-4 h4">Name:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.EmpName)</dd>
-                    
-                    <dt class="col-sm-4 h4">Address:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.EmpAddress)</dd>
-
-                    <dt class="col-sm-4 h4">Date of Birth:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.DateOfBirth)</dd>
-
-                    <dt class="col-sm-4 h4">Date of Joining:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.DateOfJoining)</dd>
-
-                    <dt class="col-sm-4 h4">Aadhar Number:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.EmpAadhar)</dd>
-                    
-                    <dt class="col-sm-4 h4">Phone Number:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.EmpPhoneNumber)</dd>
-                    
-                    <dt class="col-sm-4 h4">Email:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.EmpEmail)</dd>
-
-                    <dt class="col-sm-4 h4">Department:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.DeptartmentName)</dd>
-
-                    <dt class="col-sm-4 h4">State:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.StateName)</dd>
-
-                    <dt class="col-sm-4 h4">City:</dt>
-                    <dd class="col-sm-8 h5">@Html.DisplayFor(model => model.CityName)</dd>
-                </dl>
-            </div>
+        <div class="col-md-6 mb-4 justify-content-center">
+            <img src="@Model.ImageURL" alt="Employee Image" class="img-fluid rounded-lg shadow">
+        </div>
+        <div class="col-md-6 mb-4">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th class="text-primary" scope="row">Employee ID</th>
+                        <td>@Html.DisplayFor(model => model.EmpId)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-primary" scope="row">Employee Code</th>
+                        <td>@Html.DisplayFor(model => model.EmpCode)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-primary" scope="row">Name</th>
+                        <td>@Html.DisplayFor(model => model.EmpName)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-primary" scope="row">Address</th>
+                        <td>@Html.DisplayFor(model => model.EmpAddress)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-primary" scope="row">Date of Birth</th>
+                        <td>@Html.DisplayFor(model => model.DateOfBirth)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-primary" scope="row">Date of Joining</th>
+                        <td>@Html.DisplayFor(model => model.DateOfJoining)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-primary" scope="row">Aadhar Number</th>
+                        <td>@Html.DisplayFor(model => model.EmpAadhar)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-primary" scope="row">Phone Number</th>
+                        <td>@Html.DisplayFor(model => model.EmpPhoneNumber)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-primary" scope="row">Email</th>
+                        <td>@Html.DisplayFor(model => model.EmpEmail)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-primary" scope="row">Department</th>
+                        <td>@Html.DisplayFor(model => model.DeptartmentName)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-primary" scope="row">State</th>
+                        <td>@Html.DisplayFor(model => model.StateName)</td>
+                    </tr>
+                    <tr>
+                        <th class="text-primary" scope="row">City</th>
+                        <td>@Html.DisplayFor(model => model.CityName)</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
 
-<div class="container mt-4">
+<div class="container mt-5">
     <div class="row">
-        <div class="col-md-12">
-            <a href="@Url.Action("Edit", "Employee", new { id = Model.EmpId })" class="btn btn-primary">Edit</a>
-            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <div class="col-md-12 ">
+            <a href="@Url.Action("Edit", "Employee", new { id = Model.EmpId })" class="btn btn-primary mr-3">Edit</a>
+            <a asp-action="Index" class="btn btn-secondary ">Back to List</a>
         </div>
     </div>
 </div>
-
-<style>
-    .container {
-        max-width: 1200px; /* Adjust container width */
-        margin: auto;
-    }
-
-    .img-fluid {
-        max-width: 100%;
-        height: auto;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    dl dt {
-        font-weight: bold;
-    }
-
-    dl dd {
-        margin-bottom: 10px;
-    }
-
-    .btn {
-        margin-right: 10px;
-    }
-
-    h1 {
-        font-family: 'Times New Roman', Times, serif;
-        font-size: 64px;
-    }
-
-    .navbar {
-        padding-top: 0; /* Remove top padding */
-    }
-
-    .navbar-nav .nav-link {
-        color: #f8f9fa; /* Off-white color */
-    }
-
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link:focus {
-            color: #dee2e6; /* Lighter shade of off-white on hover/focus */
-        }
-</style>
