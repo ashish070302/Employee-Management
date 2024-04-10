@@ -79,8 +79,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="StateId" class="control-label">State</label>
-                        <select id="StateId" class="form-select" asp-for="StateId" asp-items="@ViewBag.States">
-                            <option disabled selected> --- Select State Name --- </option>
+                        <select id="StateId" class="form-select" asp-for="StateId" asp-items="@ViewBag.States" data-placeholder="Select a city">
+                            @* <option disabled selected> --- Select State Name --- </option> *@
                         </select>
                         <span asp-validation-for="StateId" class="text-danger"></span>
                     </div>
@@ -88,7 +88,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label asp-for="CityId" class="control-label">City</label>
-                        <select id="CityId" class="form-select" asp-for="CityId" asp-items="@ViewBag.Cities">
+                        <select id="CityId" class="form-select" asp-for="CityId" data-placeholder="Select a city" asp-items="@ViewBag.Cities">
                             <option disabled selected> --- Select City Name --- </option>
                         </select>
                         <span asp-validation-for="CityId" class="text-danger"></span>
@@ -96,7 +96,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" onclick="showPopup('@Model.Name')" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -154,10 +154,5 @@
             // Initialize City dropdown on page load
             getCityByStateId();
         });
-    </script>
-    <script>
-        function showPopup(employeeName){
-            alert("New employee " + employeeName + " created")
-        }
     </script>
 }

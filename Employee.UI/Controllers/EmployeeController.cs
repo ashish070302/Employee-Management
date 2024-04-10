@@ -32,10 +32,14 @@ namespace EmployeeUI.Controllers
             _utilityRepo = utilityRepo;
         }
                 
-        public async Task<IActionResult> Index(string filterText, int pageNumber=1, int pageSize=2, string searchText=null)
+        public async Task<IActionResult> Index(string[] selectedDepartments, string filterText, int pageNumber=1, int pageSize=4, string searchText=null, string sortOrder=null)
         {
             var emps = await _employeeRepo.GetAll();
             var vm = new List<EmployeeViewModel>();
+
+            var departments = await _departmentRepo.GetAll();
+            ViewData["departments"] = departments.Select(d => new SelectListItem { Text = d.Name, Value = d.Name });
+
 
             if (searchText != null)
             {
@@ -48,35 +52,139 @@ namespace EmployeeUI.Controllers
             ViewData["filterData"] = searchText;
 
             int totalItems = 0;
-            if (!string.IsNullOrEmpty(searchText))
+
+
+            if (selectedDepartments?.Any() == true && !string.IsNullOrEmpty(searchText))
             {
-                emps = emps.Where(x => x.Name.Contains(searchText) ||
-                    x.Code.Contains(searchText) ||
-                    x.PhoneNumber.Contains(searchText) ||
-                    x.Email.Contains(searchText));
+                emps = emps.Where(e => selectedDepartments.Contains(e.Department.Name) &&
+                    (e.Name.Contains(searchText) || e.Code.Contains(searchText)));
             }
-            totalItems = emps.ToList().Count;
+            else if (selectedDepartments?.Any() == true)
+            {
+                emps = emps.Where(e => selectedDepartments.Contains(e.Department.Name));
+            }
+            else if (!string.IsNullOrEmpty(searchText))
+            {
+                emps = emps.Where(e => e.Name.Contains(searchText) || e.Code.Contains(searchText));
+            }
+
+            //if (!string.IsNullOrEmpty(searchText))
+            //{
+            //    var searchTerms = searchText.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+
+            //    // Separate lists for union and intersection filtering
+            //    var unionTerms = searchTerms.ToList();
+            //    var locationTerms = searchTerms.Where(term => !term.Contains(" ")).ToList(); // Assuming location terms won't have spaces
+
+            //    // Filter by union of search terms (OR condition)
+            //    var unionFiltered = emps.Where(x => unionTerms.Any(term =>
+            //        x.Name.Contains(term) ||
+            //        x.Code.Contains(term) ||
+            //        x.PhoneNumber.Contains(term) ||
+            //        x.Email.Contains(term) ||
+            //        x.Aadhar.Contains(term) ||
+            //        x.Department.Name.Contains(term) ||
+            //        x.State.Name.Contains(term) ||
+            //        x.City.Name.Contains(term)));
+
+            //    // Filter by location terms (independent matches)
+            //    var locationFiltered = emps.Where(x => locationTerms.Any(loc =>
+            //        x.Department.Name.Contains(loc) ||
+            //        x.State.Name.Contains(loc) ||
+            //        x.City.Name.Contains(loc)));
+
+            //    // Combine results (union with distinct to avoid duplicates)
+            //    emps = unionFiltered.Union(locationFiltered).Distinct();
+            //}
+
+            //Sorting
+            ////ViewData["NameSort"] = string.IsNullOrEmpty(sortOrder) ? "Name" : "";
+            //ViewData["CodeSort"] = string.IsNullOrEmpty(sortOrder) ? "Code" : "";
+            //ViewData["DepartmentSort"] = sortOrder == "DepartmentName" ? "DepartmentName" : "DepartmentName";
+            ////ViewData["CodeSort"] = sortOrder == "Code" ? "Code" : "Code";
+            //ViewData["NameSort"] = sortOrder == "Name" ? "Name" : "Name";
+            //switch (sortOrder)
+            //{
+            //    case "Name":
+            //        emps = emps.OrderByDescending(x => x.Name).ToList();
+            //        break;
+            //    case "Code":
+            //        emps = emps.OrderByDescending(x => x.Code).ToList();
+            //        break;
+            //    case "DepartmentName":
+            //        emps = emps.OrderByDescending(x => x.Department.Name).ToList();
+            //        break;
+            //    default:
+            //        emps = emps.OrderBy(x => x.Code).ToList();
+            //        break;
+            //}
+
+            ViewData["SortOrder"] = string.IsNullOrEmpty(sortOrder) ? "Name" : sortOrder;
+
+            // Adjust sorting logic
+            switch (sortOrder)
+            {
+                case "Code":
+                    emps = emps.OrderBy(x => x.Code).ToList();
+                    break;
+                case "DepartmentName":
+                    emps = emps.OrderBy(x => x.Department.Name).ToList();
+                    break;
+                default:
+                    // Default sorting by name (ascending)
+                    emps = emps.OrderBy(x => x.Name).ToList();
+                    break;
+            }
+
+            totalItems = emps.ToList().Count();
             emps = emps.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
-            foreach (var emp in emps)
+            if (emps.Any())
             {
-                vm.Add(new EmployeeViewModel
+                foreach (var emp in emps)
                 {
-                    Id = emp.Id,
-                    Name = emp.Name,
-                    Code = emp.Code,
-                    Address = emp.Address,
-                    DateOfBirth = emp.DateOfBirth,
-                    DateOfJoining = emp.DateOfJoining,
-                    Aadhar = emp.Aadhar,
-                    PhoneNumber = emp.PhoneNumber,
-                    Email = emp.Email,
-                    ImageURL = emp.ImageURL,
-                    DeptartmentName = emp.Department.Name,
-                    StateName = emp.State.Name,
-                    CityName = emp.City.Name
-                });
-            }            
+                    vm.Add(new EmployeeViewModel
+                    {
+                        Id = emp.Id,
+                        Name = emp.Name,
+                        Code = emp.Code,
+                        Address = emp.Address,
+                        DateOfBirth = emp.DateOfBirth,
+                        DateOfJoining = emp.DateOfJoining,
+                        Aadhar = emp.Aadhar,
+                        PhoneNumber = emp.PhoneNumber,
+                        Email = emp.Email,
+                        ImageURL = emp.ImageURL,
+                        DeptartmentName = emp.Department.Name,
+                        StateName = emp.State.Name,
+                        CityName = emp.City.Name
+                    });
+                }
+            }
+            else
+            {
+                ViewData["NoResults"] = "No results found.";
+            }
+
+            //foreach (var emp in emps)
+            //{
+            //    vm.Add(new EmployeeViewModel
+            //    {
+            //        Id = emp.Id,
+            //        Name = emp.Name,
+            //        Code = emp.Code,
+            //        Address = emp.Address,
+            //        DateOfBirth = emp.DateOfBirth,
+            //        DateOfJoining = emp.DateOfJoining,
+            //        Aadhar = emp.Aadhar,
+            //        PhoneNumber = emp.PhoneNumber,
+            //        Email = emp.Email,
+            //        ImageURL = emp.ImageURL,
+            //        DeptartmentName = emp.Department.Name,
+            //        StateName = emp.State.Name,
+            //        CityName = emp.City.Name
+            //    });
+            //}            
 
             var pvm = new PageEmployeeViewModel
             {
@@ -102,7 +210,8 @@ namespace EmployeeUI.Controllers
             var departments = await _departmentRepo.GetAll();
             ViewBag.DepartmentList = new SelectList(departments, "Id", "Name");
 
-            return View();
+            var model = new CreateEmployeeViewModel();
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Create(CreateEmployeeViewModel vm)

@@ -1,19 +1,93 @@
 ﻿.table-responsive {
-    overflow-x: auto; /* Add horizontal scroll bar */
+    overflow-x: auto;
 }
 
-/* Style for pagination */
 .pagination {
-    justify-content: flex-end; /* Align pagination to the right */
+    justify-content: flex-end; 
 }
 
-    .pagination .page-item .page-link {
-        color: white; /* Blue color for page numbers */
-        background-color: cornflowerblue; /* White background color */
-        border-color: black; /* White border color */
+.pagination .page-item .page-link {
+    color: white;  
+    background-color: cornflowerblue;  
+    border-color: black;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: blue; 
+}
+
+/*new*/
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    color: blue; /* Change text color to white */
+    background-color: lightgreen; /* Background color for selected option */
+    border: 1px solid #007bff; /* Border color for selected option */
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: blue; /* Change remove button color to white */
+}
+
+/* CSS for highlighting selected department */
+.select2-container--default .select2-results__option[aria-selected="true"] {
+    background-color: lightgreen; /* Background color for selected department */
+    color: black; /* Text color for selected department */
+}
+
+    .select2-container--default .select2-results__option[aria-selected="true"]:hover {
+        background-color: floralwhite; /* Hover background color for selected department */
+        color: black; /* Hover text color for selected department */
     }
 
-    .pagination .page-item.active .page-link {
-        background-color: blue; /* Set background color for active page link */
+.search-form .form-control {
+    margin-left: 10px; /* Add space between input and select */
+}
+
+/* Example CSS for elements affected by Select2 */
+.select2-container {
+    width: 100%; /* Adjust width as needed */
+}
+
+.select2-selection__choice {
+    background-color: #007bff; /* Example background color for selected options */
+    color: #fff; /* Example text color for selected options */
+}
+
+.select2-results__option {
+    padding: 10px; /* Example padding for dropdown options */
+    /*overflow-y: auto;*/
+}
+
+.search-form .select-box {
+    margin-left: 10px; /* Adjust as needed */
+}
+
+.search-button {
+    height: 40px; /* Cover 20% of the container */
+    margin-left: 10px;
+}
+
+.search-input {
+    height: 40px;
+}
+
+
+/*Responsive styles */
+@media (max-width: 768px) {
+
+    .search-form {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
     }
 
+    .search-input {
+        width: auto;
+        margin-bottom:10px;
+    }
+
+    .search-button {
+        width: auto;
+        margin-bottom: 10px;
+    }
+}
