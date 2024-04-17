@@ -1,0 +1,55 @@
+﻿@model Employee.UI.ViewModels.Account.LoginSignUpViewModel
+
+@{
+    ViewData["Title"] = "LogIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #f5f5f5; /* Off-white background color */
+        color: #000; /* Black text color */
+    }
+</style>
+
+<div class="container">
+    <div class="row mt-lg-5">
+        <div class="col-4 offset-4 border border-primary rounded pl-5 pr-5 pb-5">
+            <div class="text-center">
+                <h1 class="text-info">User Log In</h1>
+            </div>
+            <hr />
+            <h6 class="text-success text-center">@TempData["successMessage"]</h6>
+            <form method="post" asp-action="Login">
+                <div class="form-group">
+                    <label asp-for="Username"></label>
+                    <input type="text" asp-for="Username" placeholder="Enter username" class="form-control" autocomplete="off" />
+                    <span class="text-danger">@TempData["errorUsername"]</span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input id="password" type="password" asp-for="Password" placeholder="Enter password" class="form-control" autocomplete="off" />
+                    <span class="text-danger">@TempData["errorPassword"]</span>
+                </div>
+                <br />
+                <div class="form-group">
+                    <input type="checkbox" asp-for="IsRemember" />
+                    <label asp-for="IsRemember"></label>
+                </div>
+
+                <div class="form-group text-center">
+                    <input type="submit" class="btn btn-block btn-primary mt-2 mb-2" value="Log In" />
+                </div>
+            </form>@* 
+            <div class="text-center">
+                <a class="text-primary" asp-action="ForgotUsername">Forgot Username?</a><br />
+                <a class="text-primary" asp-action="ForgotPassword">Forgot Password?</a>
+            </div> *@
+
+            <div class="text-center">
+                <a class="text-light btn btn-primary font-weight-bold" asp-action="SignUp" asp-controller="Account">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -19,15 +19,31 @@ namespace Employee.UI.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("LogIn", "Account");
+            }
+
             var emps = await _employeeRepo.GetAll();
             var vm = emps.Select(x => new HomeEmployeeViewModel
             {
-                EmployeeId = x.Id, 
+                EmployeeId = x.Id,
                 EmployeeName = x.Name,
                 EmployeeImage = x.ImageURL,
                 EmployeeDept = x.Department.Name
             }).ToList();
+
             return View(vm);
+
+            //var emps = await _employeeRepo.GetAll();
+            //var vm = emps.Select(x => new HomeEmployeeViewModel
+            //{
+            //    EmployeeId = x.Id, 
+            //    EmployeeName = x.Name,
+            //    EmployeeImage = x.ImageURL,
+            //    EmployeeDept = x.Department.Name
+            //}).ToList();
+            //return View(vm);
         }
 
         public IActionResult Privacy()

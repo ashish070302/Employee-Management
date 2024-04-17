@@ -1,54 +1,49 @@
 ﻿<nav class="navbar navbar-expand-lg bg-dark navbar-dark" data-bs-theme="dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" asp-action="Index" asp-controller="Home">EMP</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarColor02">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#">
-                        Home
-                        <span class="visually-hidden">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Employee" asp-action="index"><b>Employee</b></a>
-                </li>@*
-                <li class="nav-item">
-                    <a class="nav-link " asp-area="" asp-controller="State" asp-action="index">State</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " asp-area="" asp-controller="City" asp-action="index">City</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " asp-area="" asp-controller="Department" asp-action="index">Department</a>
-                </li> *@
-            </ul>
-        </div>
-    </div>
+	<div class="container-fluid">
+		<a class="navbar-brand" asp-action="Index" asp-controller="Home">EMP</a>
+		@if (User.Identity.IsAuthenticated)
+		{
+			<div class="navbar float-right mt-1 d-lg-none">
+				<a class="btn btn-sm btn-danger" asp-action="LogOut" asp-controller="Account">LogOut</a>
+			</div>
+		}
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarColor02">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				@* <li class="nav-item">
+				<a class="nav-link active" href="#">
+				Home
+				<span class="visually-hidden">(current)</span>
+				</a>
+				</li> *@
+				<li class="nav-item">
+					<a class="nav-link" asp-area="" asp-controller="Employee" asp-action="index"><b>Employee</b></a>
+				</li>@*
+				<li class="nav-item">
+				<a class="nav-link " asp-area="" asp-controller="State" asp-action="index">State</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link " asp-area="" asp-controller="City" asp-action="index">City</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link " asp-area="" asp-controller="Department" asp-action="index">Department</a>
+				</li> *@
+			</ul>
+		</div>
+		@if (User.Identity.IsAuthenticated)
+		{
+			<div class="navbar mt-1 d-none d-lg-flex">
+				<span class="text-light font-bold p-2">Hello, @User.Identity.Name.ToUpper()</span><a class="btn btn-sm btn-danger" asp-action="LogOut" asp-controller="Account">LogOut</a>
+			</div>
+		}
+	</div>
 </nav>
 
 <style>
-    .navbar-nav .nav-link {
-        color: #f8f9fa; /* Off-white color */
-        font-size: 16px; /* Font size */
-        font-weight: normal; /* Font weight */
-        font-family: Arial, sans-serif; /* Font family */
-    }
-
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link:focus {
-            color: #dee2e6; /* Lighter shade of off-white on hover/focus */
-        }
-
-    .navbar-toggler {
-        color: #fff; /* Set navbar toggler icon color to white */
-        border-color: #fff; /* Set border color to white */
-    }
-
-    .navbar {
-        padding-top: 0; /* Remove top padding */
-    }
+	.navbar {
+		padding-top: 0; /* Remove top padding */
+	}
 
 </style>

@@ -4,6 +4,7 @@ using Employee.UI.ViewModels.HomePageViewModel;
 using EmployeeEntity;
 using EmployeeRepositories;
 using EmployeeRepositories.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EmployeeUI.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         public IEmployeeRepo _employeeRepo;
