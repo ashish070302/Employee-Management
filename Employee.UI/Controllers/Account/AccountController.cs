@@ -40,6 +40,8 @@ namespace Employee.UI.Controllers.Account
                     return View(model);
                 }
 
+                var emailConfirmationToken = Guid.NewGuid().ToString(); // Generate a unique token for email confirmation
+
                 var data = new User()
                 {
                     Username = model.Username,
@@ -47,10 +49,15 @@ namespace Employee.UI.Controllers.Account
                     Password = EncryptPassword(model.Password),
                     Mobile = model.Mobile,
                     IsActive = model.IsActive,
+                    EmailConfirmationToken = emailConfirmationToken // Store the token
                 };
                 context.Users.Add(data);
                 context.SaveChanges();
-                TempData["successMessage"] = "Used Id created. You can log in now.";
+
+                SendEmailConfirmationEmail(model.Email, emailConfirmationToken);
+
+
+                TempData["successMessage"] = "Account created successfully. Please check your email to confirm your email address.";
                 return RedirectToAction("Login");
             }
             else
@@ -72,7 +79,13 @@ namespace Employee.UI.Controllers.Account
 				var data = context.Users.Where(e => e.Username == model.Username).SingleOrDefault();
 				if (data != null)
 				{
-					bool isValid = (data.Username == model.Username && DecryptPassword(data.Password) == model.Password);
+                    if (!data.EmailConfirmed)
+                    {
+                        TempData["errorEmail"] = "Email not confirmed. Please check your email to confirm your email address.";
+                        return View(model);
+                    }
+
+                    bool isValid = (data.Username == model.Username && DecryptPassword(data.Password) == model.Password);
 					if (isValid)
 					{
 						var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, model.Username) }, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -110,8 +123,8 @@ namespace Employee.UI.Controllers.Account
             var userEmail = HttpContext.Session.GetString("Email");
 
             string smtpServer = "smtp.gmail.com";
-            int smtpPort = 587; // Example port number, replace with your SMTP port
-            string senderEmail = "awwshish1223@gmail.com"; // Replace with your sender email address
+            int smtpPort = 587;
+            string senderEmail = "awwshish1223@gmail.com";
             string senderPassword = "nvzs tfkk dtnr boig";
 
             // Send email to the user
@@ -160,8 +173,8 @@ namespace Employee.UI.Controllers.Account
         private void SendLogoutEmail(string userEmail, string username, string smtpServer, int smtpPort, string senderEmail, string senderPassword)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Employee Portal", senderEmail)); // Use sender email and display name
-            message.To.Add(new MailboxAddress("", userEmail)); // No display name for recipient
+            message.From.Add(new MailboxAddress("Employee Portal", senderEmail));
+            message.To.Add(new MailboxAddress("", userEmail));
             message.Subject = "You are getting logged out";
 
             // Construct the email body with username
@@ -175,17 +188,58 @@ namespace Employee.UI.Controllers.Account
                 using (var client = new SmtpClient())
                 {
                     // Connect to the SMTP server
-                    client.Connect(smtpServer, smtpPort); // Use provided SMTP server details
+                    client.Connect(smtpServer, smtpPort);
 
                     // Authenticate with sender credentials
-                    client.Authenticate(senderEmail, senderPassword); // Use provided sender email and password
-                    client.Send(message);
+                    client.Authenticate(senderEmail, senderPassword);
                     client.Disconnect(true);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to send email: {ex.Message}");
+            }
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string email, string token)
+        {
+            var user = context.Users.FirstOrDefault(u => u.Email == email && u.EmailConfirmationToken == token);
+            if (user != null)
+            {
+                user.EmailConfirmed = true;
+                user.EmailConfirmationToken = "";
+                context.SaveChanges();
+                TempData["successMessage"] = "Email confirmed successfully. You can now log in.";
+            }
+            else
+            {
+                TempData["errorMessage"] = "Invalid email confirmation link.";
+            }
+
+            return RedirectToAction("Login");
+        }
+
+
+        private void SendEmailConfirmationEmail(string userEmail, string emailConfirmationToken)
+        {
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress("Employee Portal", "awwshish1223@gmail.com"));
+            message.To.Add(new MailboxAddress("", userEmail));
+            message.Subject = "Confirm your email address";
+
+            // Construct the confirmation link with email and token
+            var confirmationLink = Url.Action("ConfirmEmail", "Account", new { email = userEmail, token = emailConfirmationToken }, Request.Scheme);
+
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = $"<p>Please click <a href='{confirmationLink}'>here</a> to confirm your email address.</p>";
+            message.Body = bodyBuilder.ToMessageBody();
+
+            using (var client = new SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587, false);
+                client.Authenticate("awwshish1223@gmail.com", "nvzs tfkk dtnr boig");
+                client.Send(message);
+                client.Disconnect(true);
             }
         }
 

@@ -31,6 +31,7 @@
                     <label asp-for="Password"></label>
                     <input id="password" type="password" asp-for="Password" placeholder="Enter password" class="form-control" autocomplete="off" />
                     <span class="text-danger">@TempData["errorPassword"]</span>
+                    <span class="text-danger">@TempData["errorEmail"]</span>
                 </div>
                 <br />
                 <div class="form-group">
@@ -40,6 +41,7 @@
 
                 <div class="form-group text-center">
                     <input type="submit" class="btn btn-block btn-primary mt-2 mb-2" value="Log In" />
+                    
                 </div>
             </form>@* 
             <div class="text-center">
